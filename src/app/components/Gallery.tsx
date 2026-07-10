@@ -14,6 +14,11 @@ export function Gallery() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    if (!supabase) {
+      setLoading(false);
+      return;
+    }
+
     supabase
       .from("galeri")
       .select("*")

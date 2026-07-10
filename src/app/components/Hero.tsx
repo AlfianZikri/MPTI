@@ -6,6 +6,12 @@ export function Hero() {
   const [totalGuru, setTotalGuru] = useState<number | null>(null);
 
   useEffect(() => {
+    if (!supabase) {
+      setTotalSiswa(0);
+      setTotalGuru(0);
+      return;
+    }
+
     supabase
       .from("siswa")
       .select("id", { count: "exact", head: true })

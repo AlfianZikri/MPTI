@@ -13,6 +13,11 @@ export function Programs() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    if (!supabase) {
+      setLoading(false);
+      return;
+    }
+
     supabase
       .from("program")
       .select("*")

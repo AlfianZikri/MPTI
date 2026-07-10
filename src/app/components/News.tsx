@@ -22,6 +22,11 @@ export function News() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    if (!supabase) {
+      setLoading(false);
+      return;
+    }
+
     supabase
       .from("berita")
       .select("*")
