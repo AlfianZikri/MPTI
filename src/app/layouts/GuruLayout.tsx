@@ -19,6 +19,7 @@ export function GuruLayout() {
   const [guru, setGuru] = useState<Guru | null>(null);
 
   useEffect(() => {
+    if (!supabase) return;
     supabase.from("guru").select("*").eq("id", DEMO_GURU_ID).single().then(({ data }) => {
       if (data) setGuru(data as Guru);
     });

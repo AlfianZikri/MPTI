@@ -21,6 +21,12 @@ export function GuruAbsensi() {
 
   async function fetchData() {
     setLoading(true);
+    if (!supabase) {
+      setAbsensi([]);
+      setSiswaList([]);
+      setLoading(false);
+      return;
+    }
     const [absensiRes, siswaRes] = await Promise.all([
       supabase.from("absensi").select("*, siswa:siswa_id(*)").order("tanggal", { ascending: false }),
       supabase.from("siswa").select("*").order("nama", { ascending: true }),
@@ -40,6 +46,11 @@ export function GuruAbsensi() {
     e.preventDefault();
     if (!form.siswa_id || !form.tanggal) {
       setFormError("Siswa dan tanggal wajib diisi.");
+      return;
+    }
+
+    if (!supabase) {
+      setFormError("Database tidak tersedia. Silakan cek koneksi Supabase Anda.");
       return;
     }
 
@@ -65,6 +76,7 @@ export function GuruAbsensi() {
 
   async function hapus(id: string) {
     if (!confirm("Hapus data absensi ini?")) return;
+    if (!supabase) return;
     const { error } = await supabase.from("absensi").delete().eq("id", id);
     if (!error) setAbsensi((prev) => prev.filter((a) => a.id !== id));
   }

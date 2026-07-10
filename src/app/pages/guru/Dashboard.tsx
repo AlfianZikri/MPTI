@@ -12,6 +12,12 @@ export function GuruDashboard() {
 
   async function fetchStats() {
     setLoading(true);
+    if (!supabase) {
+      setStats({ totalMapel: 0, totalSiswa: 0, totalNilai: 0, totalAbsensi: 0 });
+      setLoading(false);
+      return;
+    }
+    
     const [mapelRes, siswaRes, nilaiRes, absensiRes] = await Promise.all([
       supabase.from("jadwal").select("mapel", { count: "exact" }).eq("guru_nama", "Guru Demo").limit(1),
       supabase.from("siswa").select("*", { count: "exact" }).limit(1),

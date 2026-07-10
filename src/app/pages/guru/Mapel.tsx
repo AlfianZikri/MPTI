@@ -12,6 +12,11 @@ export function GuruMapel() {
 
   async function fetchJadwal() {
     setLoading(true);
+    if (!supabase) {
+      setJadwal([]);
+      setLoading(false);
+      return;
+    }
     const { data } = await supabase.from("jadwal").select("*").order("urutan", { ascending: true });
     if (data) setJadwal(data as Jadwal[]);
     setLoading(false);

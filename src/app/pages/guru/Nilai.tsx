@@ -21,6 +21,12 @@ export function GuruNilai() {
 
   async function fetchData() {
     setLoading(true);
+    if (!supabase) {
+      setNilai([]);
+      setSiswaList([]);
+      setLoading(false);
+      return;
+    }
     const [nilaiRes, siswaRes] = await Promise.all([
       supabase.from("nilai").select("*, siswa:siswa_id(*)").order("created_at", { ascending: false }),
       supabase.from("siswa").select("*").order("nama", { ascending: true }),
@@ -58,6 +64,11 @@ export function GuruNilai() {
     e.preventDefault();
     if (!form.siswa_id || !form.mapel) {
       setFormError("Siswa dan mata pelajaran wajib diisi.");
+      return;
+    }
+
+    if (!supabase) {
+      setFormError("Database tidak tersedia. Silakan cek koneksi Supabase Anda.");
       return;
     }
 
@@ -104,6 +115,7 @@ export function GuruNilai() {
 
   async function hapus(id: string) {
     if (!confirm("Hapus data nilai ini?")) return;
+    if (!supabase) return;
     const { error } = await supabase.from("nilai").delete().eq("id", id);
     if (!error) setNilai((prev) => prev.filter((n) => n.id !== id));
   }

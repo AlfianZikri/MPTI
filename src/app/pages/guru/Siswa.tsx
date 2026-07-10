@@ -15,6 +15,11 @@ export function GuruSiswa() {
 
   async function fetchSiswa() {
     setLoading(true);
+    if (!supabase) {
+      setSiswa([]);
+      setLoading(false);
+      return;
+    }
     const { data } = await supabase.from("siswa").select("*").order("nama", { ascending: true });
     if (data) setSiswa(data as Siswa[]);
     setLoading(false);
