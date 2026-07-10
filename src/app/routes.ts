@@ -19,6 +19,12 @@ import { WaliLayout } from "./layouts/WaliLayout";
 import { WaliDashboard } from "./pages/wali/Dashboard";
 import { WaliAnak } from "./pages/wali/Anak";
 import { WaliPembayaran } from "./pages/wali/Pembayaran";
+import { GuruLayout } from "./layouts/GuruLayout";
+import { GuruDashboard } from "./pages/guru/Dashboard";
+import { GuruMapel } from "./pages/guru/Mapel";
+import { GuruSiswa } from "./pages/guru/Siswa";
+import { GuruNilai } from "./pages/guru/Nilai";
+import { GuruAbsensi } from "./pages/guru/Absensi";
 
 export const router = createBrowserRouter([
   { path: "/", Component: MainWebsite },
@@ -54,6 +60,17 @@ export const router = createBrowserRouter([
       { index: true, Component: WaliDashboard },
       { path: "anak", Component: WaliAnak },
       { path: "pembayaran", Component: WaliPembayaran },
+    ],
+  },
+  {
+    path: "/guru",
+    Component: GuruLayout,
+    children: [
+      { index: true, Component: GuruDashboard },
+      { path: "mapel", Component: GuruMapel },
+      { path: "siswa", Component: GuruSiswa },
+      { path: "nilai", Component: GuruNilai },
+      { path: "absensi", Component: GuruAbsensi },
     ],
   },
 ]);
