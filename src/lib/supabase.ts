@@ -1,13 +1,16 @@
 import { createClient } from "@supabase/supabase-js";
 
-// Use public variables for client-side access
-const supabaseUrl = import.meta.env.VITE_SUPABASE_URL || import.meta.env.VITE_PUBLIC_SUPABASE_URL;
-const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY || import.meta.env.VITE_PUBLIC_SUPABASE_ANON_KEY;
+const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
+const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
 
 let supabase: ReturnType<typeof createClient> | null = null;
 
 if (supabaseUrl && supabaseAnonKey) {
-  supabase = createClient(supabaseUrl, supabaseAnonKey);
+  try {
+    supabase = createClient(supabaseUrl, supabaseAnonKey);
+  } catch (error) {
+    console.error("[v0] Failed to initialize Supabase:", error);
+  }
 }
 
 export { supabase };
