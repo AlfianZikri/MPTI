@@ -1,12 +1,20 @@
 import { createClient } from "@supabase/supabase-js";
 
-const supabaseUrl = import.meta.env.VITE_SUPABASE_URL || "https://placeholder.supabase.co";
-const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY || "placeholder-key";
+const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
+const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
 
-export const supabase = 
-  supabaseUrl && supabaseAnonKey && supabaseUrl !== "https://placeholder.supabase.co"
-    ? createClient(supabaseUrl, supabaseAnonKey)
-    : null;
+let supabase: ReturnType<typeof createClient> | null = null;
+
+if (supabaseUrl && supabaseAnonKey) {
+  try {
+    supabase = createClient(supabaseUrl, supabaseAnonKey);
+  } catch (error) {
+    console.error("Failed to initialize Supabase:", error);
+    supabase = null;
+  }
+}
+
+export { supabase };
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
